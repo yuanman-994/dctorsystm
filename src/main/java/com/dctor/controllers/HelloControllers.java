@@ -6,7 +6,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HelloControllers {
 
-@ResponseBody
+    @ResponseBody
     @RequestMapping("/hello")
     public  String hello(){return "HELLO WORLD!!!";}
+
+    @RequestMapping("/index")
+    public String index() {
+        return "index";
+    }
+
 }
