@@ -19,5 +19,9 @@ public class HelloControllers {
     public String assessment() {
         return "assessment";
     }
+    @RequestMapping("/assessment_give")
+    public String assessment_give() {
+        return "assessment_give";
+    }
 
 }

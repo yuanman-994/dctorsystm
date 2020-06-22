@@ -297,85 +297,67 @@
                     <div class="widget am-cf widget-body-lg">
 
                         <div class="widget-body  am-fr">
-                            <div class="am-scrollable-horizontal " style="margin:0px auto;">
-                                <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black " id="example-r">
-                                    <thead>
-                                    <tr>
-                                        <th>病人序号</th>
-                                        <th>病人姓名</th>
-                                        <th>医生姓名</th>
-                                        <th>健康状态</th>
-                                        <th>健康数据评估</th>
-                                        <th>医生建议</th>
-                                        <th>评估时间</th>
-                                        <th>操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="gradeX">
-                                        <td>1</td>
-                                        <td>张鹏飞</td>
-                                        <td>李云东</td>
-                                        <td>不正常</td>
-                                        <td>需要手术</td>
-                                        <td>多喝水</td>
-                                        <td>2020.1.20</td>
-                                        <td>
-                                            <div class="tpl-table-black-operation">
-                                                <a href="javascript:;">
-                                                    <i class="am-icon-pencil"></i>查看详情
-                                                </a>
-                                                <a href="javascript:;">
-                                                    <i class="am-icon-pencil"></i>给予建议
-                                                </a>
+                            <div class="all-comments">
+                                <div class="all-comments-info">
+                                    <h1 align="center">评估表</h1>
+                                    <div class="agile-info-wthree-box">
+                                        <form>
+                                            <ul>
+                                            <li>
+                                                <strong>病人姓名：</strong>
+                                                <input type="text" placeholder="Name" required="">
+                                            </li>
+                                            <li>
+                                            <strong>医生姓名：</strong>
+                                            <input type="text" placeholder="Name" required="">
+                                            </li>
+                                            </ul>
+
+                                            <div class="wrap-col f-right">
+                                                <ul>
+                                                    <li >
+                                                        <strong>病人健康状态：</strong>
+                                                        <span class="fl">
+                                <select id="healthyType">
+                                <option value="1">正常</option>
+                                <option value="2">不正常</option>
+
+                                </select>
+                                </span>
+                                                    </li>
+
+                                                </ul>
                                             </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="gradeX">
-                                        <td>2</td>
-                                        <td>李锋顾</td>
-                                        <td>李云东</td>
-                                        <td>不正常</td>
-                                        <td>需要面诊</td>
-                                        <td>少喝水</td>
-                                        <td>2020.1.20</td>
-                                        <td>
-                                            <div class="tpl-table-black-operation">
-                                                <a href="javascript:;">
-                                                    <i class="am-icon-pencil"></i>查看详情
-                                                </a>
-                                                <a href="javascript:;">
-                                                    <i class="am-icon-pencil"></i>给予建议
-                                                </a>
+                                            <div class="wrap-col f-right">
+                                                <ul>
+                                                    <li >
+                                                        <strong>病人数据评估：</strong>
+                                                        <span class="fl">
+                                <select id="dataType">
+                                <option value="1">健康</option>
+                                <option value="2">不健康</option>
+
+                                </select>
+                                </span>
+                                                    </li>
+
+                                                </ul>
                                             </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="gradeX">
-                                        <td>3</td>
-                                        <td>金振西</td>
-                                        <td>李云东</td>
-                                        <td>正常</td>
-                                        <td>健康</td>
-                                        <td>多喝水、多运动</td>
-                                        <td>2020.1.20</td>
-                                        <td>
-                                            <div class="tpl-table-black-operation">
-                                                <a href="javascript:;">
-                                                    <i class="am-icon-pencil"></i>查看详情
-                                                </a>
-                                                <a href="javascript:;">
-                                                    <i class="am-icon-pencil"></i>给予建议
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
 
-
-
-
-                                    <!-- more data -->
-                                    </tbody>
-                                </table>
+                                            <ul>
+                                            <strong>评估时间：</strong>
+                                            <input type="text" placeholder="Time" required="">
+                                            </ul>
+                                            <ul>
+                                                <li>
+                                            <strong>医生建议：</strong>
+                                            <textarea placeholder="Message" required=""></textarea>
+                                                </li>
+                                            <input type="submit" value="SEND">
+                                            </ul>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
