@@ -15,4 +15,9 @@ public class HelloControllers {
         return "index";
     }
 
+    @RequestMapping("/assessment")
+    public String assessment() {
+        return "assessment";
+    }
+
 }
