@@ -15,6 +15,16 @@ public class HelloControllers {
         return "index";
     }
 
+    @RequestMapping("/test")
+    public String test() {
+        return "test";
+    }
+
+    @RequestMapping("/chart")
+    public String chart() {
+        return "chart";
+    }
+
     @RequestMapping("/assessment")
     public String assessment() {
         return "assessment";

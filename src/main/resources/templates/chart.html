@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Amaze UI Admin index Examples</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="icon" type="image/png" href="img/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="img/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <script th:src="@{js/echarts.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/amazeui.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/amazeui.datatables.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <script th:src="@{js/jquery.min.js}"></script>
+</head>
+
+<body>
+<script th:src="@{js/theme.js}"></script>
+<div class="am-g tpl-g">
+    <!--    引入公共部分-->
+    <script th:src="@{js/head.js}"></script>
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row am-cf">
+                <div class="am-u-lg-6">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title am-fl">关联老人统计</div>
+                            <div class="widget-function am-fr">
+                                <a href="javascript:;" class="am-icon-cog"></a>
+                            </div>
+                        </div>
+
+                        <div class="widget-body-md widget-body am-fr" style="height: 300px;" id="chart1">
+
+                        </div>
+
+                        <script type="text/javascript">
+                            // 基于准备好的dom，初始化echarts实例
+                            $(function () {
+                                $.get("/index/getOldMenNum", function (res) {
+                                    // console.log(res)
+                                    var myChart = echarts.init(document.getElementById('chart1'));
+                                    // 指定图表的配置项和数据
+                                    var option = {
+                                        tooltip: {},
+                                        legend: {
+                                            data: [{
+                                                name: '人数',
+                                            }]
+                                        },
+                                        xAxis: {
+                                            data: ["关联人数"]
+                                        },
+                                        yAxis: {},
+                                        series: [{
+                                            name: '人数',
+                                            type: 'bar',
+                                            data: [res],
+                                            barMaxWidth: "10%"
+                                        }]
+                                    };
+                                    // 使用刚指定的配置项和数据显示图表。
+                                    myChart.setOption(option);
+                                })
+                            })
+                        </script>
+                    </div>
+                </div>
+                <div class="am-u-lg-6">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title am-fl">资讯用户统计</div>
+                            <div class="widget-function am-fr">
+                                <a href="javascript:;" class="am-icon-cog"></a>
+                            </div>
+                        </div>
+
+                        <div class="widget-body-md widget-body am-fr" style="height: 300px;" id="chart2">
+
+                        </div>
+
+                        <script type="text/javascript">
+                            $(function () {
+                                $.get("/index/getAdvisoryData",function (res) {
+                                    var data = JSON.parse(res);
+                                    //data{
+                                    // num:[...]  当日资讯人数
+                                    // date:[...] 日期
+                                    //}
+                                    // 基于准备好的dom，初始化echarts实例
+                                    var myChart = echarts.init(document.getElementById('chart2'));
+                                    // 指定图表的配置项和数据
+                                    var option = {
+                                        tooltip: {},
+                                        legend: {
+                                            data: [{
+                                                name: '资询用户（人）',
+                                            }]
+                                        },
+                                        xAxis: {
+                                            data:data.date
+                                        },
+                                        yAxis: {},
+                                        series: [{
+                                            name: '资询用户（人）',
+                                            type: 'line',
+                                            data: data.num,
+                                        }]
+                                    };
+                                    // 使用刚指定的配置项和数据显示图表。
+                                    myChart.setOption(option);
+                                })
+                            })
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script th:src="@{js/amazeui.min.js}"></script>
+<script th:src="@{js/amazeui.datatables.min.js}"></script>
+<script th:src="@{js/dataTables.responsive.min.js}"></script>
+<script th:src="@{js/app.js}"></script>
+
+</body>
+
+</html>
