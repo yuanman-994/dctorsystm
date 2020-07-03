@@ -33,5 +33,9 @@ public class HelloControllers {
     public String assessment_give() {
         return "assessment_give";
     }
+    @RequestMapping("/video")
+    public String video() {return "video"; }
+    @RequestMapping("/video_chat")
+    public String video_chat() {return "video_chat"; }
 
 }
