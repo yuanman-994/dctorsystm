@@ -272,7 +272,78 @@
 
         <!-- 内容区域 -->
         <div class="tpl-content-wrapper">
-            <!--两个统计表格-->
+            <div class="row-content am-cf">
+                <div class="row am-cf">
+                    <div class="am-u-lg-6">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">医生个人信息</div>
+                                <div class="widget-function am-fr">
+                                    <a href="javascript:;" class="am-icon-cog"></a>
+                                </div>
+                            </div>
+
+                            <div class="widget-body-md widget-body am-fr" style="height: 200px;" id="chart3">
+                                <table style="width:100%;border:1px solid #848c90">
+                                    <tr>
+                                        <td colspan="3" align="left"  style="border-bottom:2px solid #4dbe9d;">个人信息</td>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="4" width="150px"><img style="margin: 0 auto;" src="/img/doctor_info.png" height="120px" width="120px"></th>
+                                        <td width="48px"><img src="/img/name.png" height="24px" width="24x"></td>
+                                        <td style="font-size: 20px" th:text="${info.doctor_name}"></td>
+                                    </tr>
+                                    <tr><td width="48px"><img src="/img/phone.png" height="24px" width="24px"></td>
+                                        <td style="font-size: 20px" th:text="${info.doctor_phone}"></td></tr>
+                                    <tr><td width="48px"><img src="/img/address.png" height="24px" width="24px"></td>
+                                        <td style="font-size: 20px" th:text="${info.doctor_address}"></td></tr>
+                                    <tr><td width="48px"><img src="/img/age.png" height="24px" width="24px"></td>
+                                        <td style="font-size: 20px" th:text="${info.doctor_age}"></td></tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="am-u-lg-6">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">老人报警提示</div>
+                                <div class="widget-function am-fr">
+                                    <a href="javascript:;" class="am-icon-cog"></a>
+                                </div>
+                            </div>
+
+                            <div class="widget-body-md widget-body am-fr" style="height: 200px;" id="chart4">
+                                <table style="width:100%;border:1px solid #848c90">
+                                    <thead>
+                                    <tr style="border-bottom:1px solid #4dbe9d;">
+                                        <td colspan="2" style="border-bottom:2px solid #4dbe9d;">老人告警信息</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="oldmanList : ${oldmanList}">
+                                        <td style="border-right:1px solid #848c90">
+                                            <span>[</span>
+                                            <span th:text="${oldmanList.oldman_name}" style="color: #4dbe9d;font-weight: bold"></span>
+                                            <span>]</span>
+                                            <span th:text="${oldmanList.oldman_age}"></span>
+                                            <span>岁，</span>
+                                            <span th:text="${oldmanList.oldman_sex}"></span>
+                                            <span>，</span>
+                                            <span th:text="${oldmanList.oldman_address}"></span>
+                                            <span>，联系电话：</span>
+                                            <span th:text="${oldmanList.oldman_phone}" style="color: #4dbe9d"></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!--两个统计表格-->
             <div class="row-content am-cf">
                 <div class="row am-cf">
                     <div class="am-u-lg-6">
@@ -285,7 +356,6 @@
                             </div>
 
                             <div class="widget-body-md widget-body am-fr" style="height: 300px;" id="chart1">
-
                             </div>
 
                             <script type="text/javascript">
@@ -328,11 +398,8 @@
                                     <a href="javascript:;" class="am-icon-cog"></a>
                                 </div>
                             </div>
-
                             <div class="widget-body-md widget-body am-fr" style="height: 300px;" id="chart2">
-
                             </div>
-
                             <script type="text/javascript">
                                 $(function () {
                                     $.get("/index/getAdvisoryData",function (res) {
@@ -371,7 +438,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <script th:src="@{js/amazeui.min.js}"></script>
     <script th:src="@{js/amazeui.datatables.min.js}"></script>
