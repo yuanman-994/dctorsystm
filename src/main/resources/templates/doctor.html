@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Site Title-->
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body><div width="50%" style="float: left">
+    <table style="border:1px solid #848c90;margin-left: 18px">
+        <tr>
+            <td colspan="3" align="left"  style="border-bottom:2px solid #4dbe9d;">个人信息</td>
+        </tr>
+        <tr>
+            <th rowspan="6"><img src="/img/doctor_info.png" height="100px" width="100px"></th>
+            <td width="24px"><img src="/img/name.png" height="18px" width="18px"></td>
+            <td th:text="${info.doctor_name}"></td>
+        </tr>
+        <tr><td width="24px"><img src="/img/phone.png" height="18px" width="18px"></td>
+            <td th:text="${info.doctor_phone}"></td></tr>
+        <tr><td width="24px"><img src="/img/address.png" height="18px" width="18px"></td>
+            <td th:text="${info.doctor_address}"></td></tr>
+        <tr><td width="24px"><img src="/img/age.png" height="18px" width="18px"></td>
+            <td th:text="${info.doctor_age}"></td></tr>
+        <tr><td colspan="2" style="background-color: #1abe61">账号信息</td></tr>
+    </table>
+</div>
+<div width="50%" style="float: left;margin-left: 18px">
+    <table style="border:1px solid #848c90">
+        <thead>
+        <tr style="border-bottom:1px solid #4dbe9d;">
+            <td colspan="2" align="left"  style="border-bottom:2px solid #4dbe9d;">老人告警信息</td>
+        </tr>
+        </thead>
+        <tr th:each="oldmanList : ${oldmanList}">
+            <td>
+                [
+                <span th:text="${oldmanList.oldman_name}" style="color: #4dbe9d;font-weight: bold"></span>
+                ]
+                <span th:text="${oldmanList.oldman_age}"></span>
+                岁，
+                <span th:text="${oldmanList.oldman_sex}"></span>
+                ，
+                <span th:text="${oldmanList.oldman_address}"></span>
+                ，联系电话：
+                <span th:text="${oldmanList.oldman_phone}" style="color: #4dbe9d"></span>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
