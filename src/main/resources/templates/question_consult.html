@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>问题咨询</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="images/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="images/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" th:href="@{/css/amazeui.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/amazeui.datatables.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery.datetimepicker.css}">
+    <script th:src="@{js/jquery.min.js}"></script>
+    <script th:src="@{js/jquery.datetimepicker.js}"></script>
+    <script>
+
+        function detailInit() {
+            //$('#doc-ipt-text-2').datetimepicker();
+            $('#consult-list').find('a.tpl-table-black-operation').
+            on('click', function() {
+                var id = $(this).parent().data('id');
+                detailBind(id);
+                $('#edit-confirm').modal({
+                    closeViaDimmer:false,
+                    relatedTarget: this,
+                    onConfirm: function(options) {
+
+                    },
+                    // closeOnConfirm: false,
+                    onCancel: function() {
+
+                    }
+                });
+            });
+        }
+        function detailBind(ask_id){
+            var id;
+            $.ajax({
+                url: "/findConsult?ask_id="+ask_id,
+                data: {id:id},
+                type: "post",
+                async: false,
+                // 定义发送请求的数据格式为JSON字符串
+                contentType: "application/json;charset=UTF-8",
+                //定义回调响应的数据格式为 JSON 字符串,该属性可以省略
+                dataType: "json",
+                //成功响应的结果
+                success: function (data) {
+                    var consult = data.consult;
+                    var a = new Array();
+                    a = consult.ask_datetime.split("-");
+                    var date = new Date(a[0],a[1]-1,a[2]);
+                    document.getElementById("doc-ipt-text-1").value = consult.ask_oldman;
+                    document.getElementById("doc-ipt-text-2").value = consult.ask_datetime;
+                    document.getElementById("doc-ipt-text-3").value = consult.ask_state;
+                    document.getElementById("doc-ta-1").value = consult.ask_test;
+                }
+            })
+
+        }
+        function answerInit() {
+            $('#consult-list').find('a.tpl-table-black-operation-del').
+            on('click', function() {
+                var id = $(this).parent().data('id');
+                answerBind(id);
+                $('#answer-confirm').modal({
+                    closeViaDimmer:false,
+                    relatedTarget: this,
+                    onConfirm: function(options) {
+                        $("#answer-form").submit();
+                    },
+                    // closeOnConfirm: false,
+                    onCancel: function() {
+
+                    }
+                });
+            });
+        }
+        function answerBind(ask_id){
+            var id;
+            $.ajax({
+                url: "/findConsult?ask_id="+ask_id,
+                data: {id:id},
+                type: "post",
+                async: false,
+                // 定义发送请求的数据格式为JSON字符串
+                contentType: "application/json;charset=UTF-8",
+                //定义回调响应的数据格式为 JSON 字符串,该属性可以省略
+                dataType: "json",
+                //成功响应的结果
+                success: function (data) {
+                    var consult = data.consult;
+                    var a = new Array();
+                    a = consult.ask_datetime.split("-");
+                    var date = new Date(a[0],a[1]-1,a[2]);
+                    document.getElementById("oldman").value = consult.ask_oldman;
+                    document.getElementById("datetime").value = consult.ask_datetime;
+                    document.getElementById("state").value = consult.ask_state;
+                    document.getElementById("test").value = consult.ask_test;
+                    document.getElementById("ask_id").value = consult.ask_id;
+                }
+            })
+
+        }
+
+    </script>
+    <script>
+
+        function getAll(page) {
+            //url:表示后台的url，就是 RequestMapping配置的内容
+            // type：http请求的类型
+            var id;
+            var perpage=5; //一页显示多少条记录
+            $.ajax({
+                url: "/getConsult",
+                data:{id:id},
+                type: "post",
+                async:false,
+                // 定义发送请求的数据格式为JSON字符串
+                contentType: "application/json;charset=UTF-8",
+                //定义回调响应的数据格式为 JSON 字符串,该属性可以省略
+                dataType: "json",
+                //成功响应的结果
+                success: function (data) {
+                    var consultTotalNum = data.consultList.length; //评论记录的总条数
+                    var pageNum = Math.ceil(consultTotalNum/perpage); //分页的总页数
+                    var consultList = data.consultList;
+                    console.log(consultList);
+                    var m='<div class="am-u-sm-12" >' +
+                        '<table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black ">' +
+                        '<thead>' +
+                        '<tr>' +
+                        '<th>序号</th>' +
+                        '<th>姓名</th>' +
+                        '<th>病情描述</th>' +
+                        '<th>咨询时间</th>' +
+                        '<th>状态</th>' +
+                        '<th>操作</th>' +
+                        '</tr>' +
+                        '</thead>' +
+                        '<tbody id="consult-list">';
+                    for(var i=((page-1)*perpage);i<(page*perpage)&&i<consultTotalNum;i++){
+                        m+=' <tr class="gradeX">' +
+                            '<td class="am-text-middle">'+i+'</td>' +
+                            '<td class="am-text-middle">'+consultList[i].ask_oldman+'</td>' ;
+                        m+= '<td class="am-text-middle">'+consultList[i].ask_test+'</td>' +
+                            '<td class="am-text-middle">'+consultList[i].ask_datetime+'</td>' +
+                            '<td class="am-text-middle">'+consultList[i].ask_state+'</td>' ;
+                         m+=   '<td class="am-text-middle">' +
+                            '<div class="tpl-table-black-operation" data-id="'+consultList[i].ask_id+'">' +
+                            '<a href="javascript:;" class="tpl-table-black-operation">' +
+                            '<i class="am-icon-pencil"></i> 详情' +
+                            '</a>' +
+                            '<a href="javascript:;" class="tpl-table-black-operation-del">' +
+                            '<i class="am-icon-trash"></i> 回复' +
+                            '</a>' +
+                            '</div>' +
+                            '</td>' +
+                            '</tr>';
+                    }
+                    m+='</tbody>' +
+                        '</table>' +
+                        '</div>' +
+                        '<div class="am-u-lg-12 am-cf">';
+                    m += '<div class="am-cf">' +
+                        '共'+consultTotalNum+'条记录 /'+pageNum+'页' +
+                        '<div class="am-fr">' +
+                        '<ul class="am-pagination" id="page">';
+                    //判断前面是否还有页面
+                    if(page == 1){
+                        m += '<li class="am-disabled"><a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" >«</a></li>';
+                    }else{
+                        m += '<li><a href="javascript:Initial('+(page-1)+')" rel="external nofollow" >«</a></li>';
+                    }
+                    for(var i=1;i<=pageNum;i++){
+                        if(i == page){
+                            m += '<li class="am-active"><a href="javascript:Initial('+i+')" rel="external nofollow" rel="external nofollow" >'+i+'</a></li>';
+                        }else{
+                            m += '<li><a href="javascript:Initial('+i+')" rel="external nofollow" rel="external nofollow" >'+i+'</a></li>';
+                        }
+                    }
+                    //判断后面是否还有页面
+                    if(page == pageNum){
+                        m += '<li class="am-disabled"><a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" >»</a></li>';
+                    }else{
+                        m += '<li><a href="javascript:Initial('+(page+1)+')" rel="external nofollow" >»</a></li>';
+                    }
+                    m += '</ul>' +
+                        '</div>' +
+                        '</div><hr>'
+                    ;
+                    $('#AllConsult').empty();
+                    $('#AllConsult').append(m);
+
+
+
+                }});
+
+        }
+    </script>
+    <script>
+        function Initial(page){
+            getAll(page);
+            detailInit();
+            answerInit();
+        }
+        function searchInitial(page){
+            search(page);
+            detailInit();
+            answerInit();
+        }
+        $(function () {
+            Initial(1);
+        });
+    </script>
+
+</head>
+
+<body data-type="widgets">
+<script th:src="@{js/theme.js}"></script>
+<div class="am-g tpl-g">
+    <!-- 头部 -->
+    <header>
+        <!-- logo -->
+        <div class="am-fl tpl-header-logo">
+            <a href="javascript:;"><img src="images/i/logo.png" alt=""></a>
+        </div>
+        <!-- 右侧内容 -->
+        <div class="tpl-header-fluid">
+            <!-- 侧边切换 -->
+            <div class="am-fl tpl-header-switch-button am-icon-list">
+                    <span>
+
+                </span>
+            </div>
+            <!-- 搜索 -->
+            <div class="am-fl tpl-header-search">
+                <form class="tpl-header-search-form" action="javascript:;">
+                    <button class="tpl-header-search-btn am-icon-search"></button>
+                    <input class="tpl-header-search-box" type="text" placeholder="搜索内容...">
+                </form>
+            </div>
+            <!-- 其它功能-->
+            <div class="am-fr tpl-header-navbar">
+                <ul>
+                    <!-- 欢迎语 -->
+                    <li class="am-text-sm tpl-header-navbar-welcome">
+                        <a href="javascript:;">欢迎你, <span>Amaze UI</span> </a>
+                    </li>
+
+                    <!-- 新邮件 -->
+                    <li class="am-dropdown tpl-dropdown" data-am-dropdown>
+                        <a href="javascript:;" class="am-dropdown-toggle tpl-dropdown-toggle" data-am-dropdown-toggle>
+                            <i class="am-icon-envelope"></i>
+                            <span class="am-badge am-badge-success am-round item-feed-badge">4</span>
+                        </a>
+                        <!-- 弹出列表 -->
+                        <ul class="am-dropdown-content tpl-dropdown-content">
+                            <li class="tpl-dropdown-menu-messages">
+                                <a href="javascript:;" class="tpl-dropdown-menu-messages-item am-cf">
+                                    <div class="menu-messages-ico">
+                                        <img src="assets/img/user04.png" alt="">
+                                    </div>
+                                    <div class="menu-messages-time">
+                                        3小时前
+                                    </div>
+                                    <div class="menu-messages-content">
+                                        <div class="menu-messages-content-title">
+                                            <i class="am-icon-circle-o am-text-success"></i>
+                                            <span>夕风色</span>
+                                        </div>
+                                        <div class="am-text-truncate"> Amaze UI 的诞生，依托于 GitHub 及其他技术社区上一些优秀的资源；Amaze UI 的成长，则离不开用户的支持。 </div>
+                                        <div class="menu-messages-content-time">2016-09-21 下午 16:40</div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="tpl-dropdown-menu-messages">
+                                <a href="javascript:;" class="tpl-dropdown-menu-messages-item am-cf">
+                                    <div class="menu-messages-ico">
+                                        <img src="assets/img/user02.png" alt="">
+                                    </div>
+                                    <div class="menu-messages-time">
+                                        5天前
+                                    </div>
+                                    <div class="menu-messages-content">
+                                        <div class="menu-messages-content-title">
+                                            <i class="am-icon-circle-o am-text-warning"></i>
+                                            <span>禁言小张</span>
+                                        </div>
+                                        <div class="am-text-truncate"> 为了能最准确的传达所描述的问题， 建议你在反馈时附上演示，方便我们理解。 </div>
+                                        <div class="menu-messages-content-time">2016-09-16 上午 09:23</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="tpl-dropdown-menu-messages">
+                                <a href="javascript:;" class="tpl-dropdown-menu-messages-item am-cf">
+                                    <i class="am-icon-circle-o"></i> 进入列表…
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- 新提示 -->
+                    <li class="am-dropdown" data-am-dropdown>
+                        <a href="javascript:;" class="am-dropdown-toggle" data-am-dropdown-toggle>
+                            <i class="am-icon-bell"></i>
+                            <span class="am-badge am-badge-warning am-round item-feed-badge">5</span>
+                        </a>
+
+                        <!-- 弹出列表 -->
+                        <ul class="am-dropdown-content tpl-dropdown-content">
+                            <li class="tpl-dropdown-menu-notifications">
+                                <a href="javascript:;" class="tpl-dropdown-menu-notifications-item am-cf">
+                                    <div class="tpl-dropdown-menu-notifications-title">
+                                        <i class="am-icon-line-chart"></i>
+                                        <span> 有6笔新的销售订单</span>
+                                    </div>
+                                    <div class="tpl-dropdown-menu-notifications-time">
+                                        12分钟前
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="tpl-dropdown-menu-notifications">
+                                <a href="javascript:;" class="tpl-dropdown-menu-notifications-item am-cf">
+                                    <div class="tpl-dropdown-menu-notifications-title">
+                                        <i class="am-icon-star"></i>
+                                        <span> 有3个来自人事部的消息</span>
+                                    </div>
+                                    <div class="tpl-dropdown-menu-notifications-time">
+                                        30分钟前
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="tpl-dropdown-menu-notifications">
+                                <a href="javascript:;" class="tpl-dropdown-menu-notifications-item am-cf">
+                                    <div class="tpl-dropdown-menu-notifications-title">
+                                        <i class="am-icon-folder-o"></i>
+                                        <span> 上午开会记录存档</span>
+                                    </div>
+                                    <div class="tpl-dropdown-menu-notifications-time">
+                                        1天前
+                                    </div>
+                                </a>
+                            </li>
+
+
+                            <li class="tpl-dropdown-menu-notifications">
+                                <a href="javascript:;" class="tpl-dropdown-menu-notifications-item am-cf">
+                                    <i class="am-icon-bell"></i> 进入列表…
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- 退出 -->
+                    <li class="am-text-sm">
+                        <a href="javascript:;">
+                            <span class="am-icon-sign-out"></span> 退出
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </header>
+    <!-- 风格切换 -->
+    <div class="tpl-skiner">
+        <div class="tpl-skiner-toggle am-icon-cog">
+        </div>
+        <div class="tpl-skiner-content">
+            <div class="tpl-skiner-content-title">
+                选择主题
+            </div>
+            <div class="tpl-skiner-content-bar">
+                <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                <span class="skiner-color skiner-black" data-color="theme-black"></span>
+            </div>
+        </div>
+    </div>
+    <!-- 侧边导航栏 -->
+    <div class="left-sidebar">
+        <!-- 用户信息 -->
+        <div class="tpl-sidebar-user-panel">
+            <div class="tpl-user-panel-slide-toggleable">
+                <div class="tpl-user-panel-profile-picture">
+                    <img src="assets/img/user04.png" alt="">
+                </div>
+                <span class="user-panel-logged-in-text">
+              <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
+              禁言小张
+          </span>
+                <a href="javascript:;" class="tpl-user-panel-action-link"> <span class="am-icon-pencil"></span> 账号设置</a>
+            </div>
+        </div>
+
+
+        <!-- 菜单 -->
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-heading">Components <span class="sidebar-nav-heading-info"> 附加组件</span></li>
+            <li class="sidebar-nav-link">
+                <a href="index.html">
+                    <i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+                </a>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="tables.html">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 表格
+                </a>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="calendar.html">
+                    <i class="am-icon-calendar sidebar-nav-link-logo"></i> 日历
+                </a>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="form.html">
+                    <i class="am-icon-wpforms sidebar-nav-link-logo"></i> 表单
+
+                </a>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="chart.html">
+                    <i class="am-icon-bar-chart sidebar-nav-link-logo"></i> 图表
+
+                </a>
+            </li>
+
+
+            <li class="sidebar-nav-link">
+                <a href="javascript:;" class="sidebar-nav-sub-title active">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 问题咨询
+                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
+                </a>
+                <ul class="sidebar-nav sidebar-nav-sub" style="display: block">
+                    <li class="sidebar-nav-link">
+                        <a href="javascript:;" class="sidebar-nav-sub-title active">
+                            <i class="am-icon-table sidebar-nav-link-logo"></i> 咨询问题
+                            <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
+                        </a>
+                        <ul class="sidebar-nav sidebar-nav-sub" style="display: block">
+                            <li class="sidebar-nav-link">
+                                <a href="/question_consult" >
+                                    <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 查看（回复）问题
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="/admin_messageboard" class="sidebar-nav-sub-title">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 留言管理
+                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
+                </a>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="/admin_log" class="sidebar-nav-sub-title">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 日志管理
+                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
+                </a>
+            </li>
+
+            <li class="sidebar-nav-heading">Page<span class="sidebar-nav-heading-info"> 常用页面</span></li>
+            <li class="sidebar-nav-link">
+                <a href="javascript:;" class="sidebar-nav-sub-title active">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 数据列表
+                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico sidebar-nav-sub-ico-rotate"></span>
+                </a>
+                <ul class="sidebar-nav sidebar-nav-sub" style="display: block;">
+                    <li class="sidebar-nav-link">
+                        <a href="table-list.html">
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 文字列表
+                        </a>
+                    </li>
+
+                    <li class="sidebar-nav-link">
+                        <a href="table-list-img.html" class="sub-active">
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 图文列表
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="sign-up.html">
+                    <i class="am-icon-clone sidebar-nav-link-logo"></i> 注册
+                    <span class="am-badge am-badge-secondary sidebar-nav-link-logo-ico am-round am-fr am-margin-right-sm">6</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="login.html">
+                    <i class="am-icon-key sidebar-nav-link-logo"></i> 登录
+                </a>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="404.html">
+                    <i class="am-icon-tv sidebar-nav-link-logo"></i> 404错误
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+
+
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title  am-cf">问题列表</div>
+
+
+                        </div>
+                        <div class="widget-body  am-fr">
+
+                            <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                <div class="am-form-group">
+                                    <div class="am-btn-toolbar">
+                                        <!--<div class="am-btn-group am-btn-group-xs" id="setlist">
+                                            <button type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</button>
+                                            <button type="button" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-save"></span> 保存</button>
+                                            <button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>
+                                            <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
+                                        </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
+                                <div class="am-form-group tpl-table-list-select">
+                                    <select id="select-time" data-am-selected="{btnSize: 'sm'}">
+                                        <option value="datenone">选择日期范围</option>
+                                        <option value="week">近七天</option>
+                                        <option value="month">近一个月</option>
+                                    </select>
+                                    <select id="select-status" data-am-selected="{btnSize: 'sm'}">
+                                        <option value="statusnone">回复状态</option>
+                                        <option value="answered">已回复</option>
+                                        <option value="unanswer">未回复</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" id="search_content" name="search_content" class="am-form-field " placeholder="请老人名字进行搜索">
+                                    <span class="am-input-group-btn">
+            <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button" onclick="searchInitial(1)"></button>
+          </span>
+                                </div>
+                            </div>
+                            <div id="AllConsult">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div class="am-modal am-modal-confirm" tabindex="-1" id="edit-confirm">
+    <div class="am-modal-dialog">
+        <div class="am-modal-hd">详情</div>
+        <div class="am-modal-bd" id="form-init">
+            <form  class="am-form am-text-sm" >
+                <div class="am-form-group">
+                    <div class="am-g">
+                        <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ipt-text-1">老人姓名</label>
+                        <input class="am-u-md-10 form-control" id="doc-ipt-text-1" name="oldman_name" >
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <div class="am-g">
+                        <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ta-1">病情描述</label>
+                        <textarea class="am-u-md-10 form-control" rows="10" id="doc-ta-1" name="ask_test" readonly="true"></textarea>
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <div class="am-g">
+                        <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ipt-text-2">咨询时间</label>
+                        <input class="am-u-md-10 form-control" id="doc-ipt-text-2" name="ask_datetime" readonly="true">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <div class="am-g">
+                        <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ipt-text-3">状态</label>
+                        <input class="am-u-md-10 form-control" id="doc-ipt-text-3" name="ask_state" readonly="true">
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn" data-am-modal-cancel>返回</span>
+            <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+        </div>
+    </div>
+</div>
+<div class="am-modal am-modal-confirm" tabindex="-1" id="answer-confirm">
+    <div class="am-modal-dialog">
+        <div class="am-modal-hd">回复</div>
+        <div class="am-modal-bd" >
+            <form  class="am-form am-text-sm" id="answer-form" action="/updateConsult" method="post">
+                <div class="am-form-group">
+                    <div class="am-g">
+                        <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ipt-text-1">老人姓名</label>
+                        <input class="am-u-md-10 form-control" id="oldman" name="oldman_name" >
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <div class="am-g">
+                        <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ta-1">病情描述</label>
+                        <textarea class="am-u-md-10 form-control" rows="5" id="test" name="ask_test" readonly="true"></textarea>
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <div class="am-g">
+                        <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ipt-text-2">咨询时间</label>
+                        <input class="am-u-md-10 form-control" id="datetime" name="ask_datetime" readonly="true">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <div class="am-g">
+                        <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ipt-text-3">状态</label>
+                        <input class="am-u-md-10 form-control" id="state" name="ask_state" readonly="true">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <div class="am-g">
+                        <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ta-1">医生回复</label>
+                        <input type="hidden" id="ask_id" name="ask_id">
+                        <textarea class="am-u-md-10 form-control" rows="8" id="answer" name="ask_answer" placeholder="请输入进行回复"></textarea>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn" data-am-modal-cancel>返回</span>
+            <span class="am-modal-btn" data-am-modal-confirm>回复</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    function  search(page) {
+        var id;
+        var perpage=5;
+        var search_content = $("#search_content").val();
+        var search_date = $("#select-time").val();
+        var search_status = $("#select-status").val();
+        $.ajax({
+            url: "/searchConsult",
+            data:JSON.stringify({search_content:search_content,search_date:search_date,search_status:search_status}),
+            type: "post",
+            async:false,
+            // 定义发送请求的数据格式为JSON字符串
+            contentType: "application/json;charset=UTF-8",
+            //定义回调响应的数据格式为 JSON 字符串,该属性可以省略
+            dataType: "json",
+            //成功响应的结果
+            success: function (data) {
+                console.log(data);
+                var consultList = new Array() ;
+                var consultTotalNum = 0;
+                for(var key in data){  //拼接返回的多个consultList方便分页显示
+                    var List = data[key];
+                    console.log(List);
+                    for(var n=0; n<List.length; n++){
+                        consultList.push(List[n]);
+                    }
+                }
+                consultTotalNum = consultList.length;
+                var pageNum = Math.ceil(consultTotalNum/perpage);
+                var m='<div class="am-u-sm-12" >' +
+                    '<table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black ">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th>序号</th>' +
+                    '<th>姓名</th>' +
+                    '<th>病情描述</th>' +
+                    '<th>咨询时间</th>' +
+                    '<th>状态</th>' +
+                    '<th>操作</th>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody id="consult-list">';
+                for(var i=((page-1)*perpage);i<(page*perpage)&&i<consultTotalNum;i++){
+                    m+=' <tr class="gradeX">' +
+                        '<td class="am-text-middle">'+i+'</td>' +
+                        '<td class="am-text-middle">'+consultList[i].ask_oldman+'</td>' ;
+                    m+= '<td class="am-text-middle">'+consultList[i].ask_test+'</td>' +
+                        '<td class="am-text-middle">'+consultList[i].ask_datetime+'</td>' +
+                        '<td class="am-text-middle">'+consultList[i].ask_state+'</td>' ;
+                    m+=   '<td class="am-text-middle">' +
+                        '<div class="tpl-table-black-operation" data-id="'+consultList[i].ask_id+'">' +
+                        '<a href="javascript:;" class="tpl-table-black-operation">' +
+                        '<i class="am-icon-pencil"></i> 详情' +
+                        '</a>' +
+                        '<a href="javascript:;" class="tpl-table-black-operation-del">' +
+                        '<i class="am-icon-trash"></i> 回复' +
+                        '</a>' +
+                        '</div>' +
+                        '</td>' +
+                        '</tr>';
+                }
+                m+='</tbody>' +
+                    '</table>' +
+                    '</div>' +
+                    '<div class="am-u-lg-12 am-cf">';
+                m += '<div class="am-cf">' +
+                    '共'+consultTotalNum+'条记录 /'+pageNum+'页' +
+                    '<div class="am-fr">' +
+                    '<ul class="am-pagination" id="page">';
+                //判断前面是否还有页面
+                if(page == 1){
+                    m += '<li class="am-disabled"><a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" >«</a></li>';
+                }else{
+                    m += '<li><a href="javascript:Initial('+(page-1)+')" rel="external nofollow" >«</a></li>';
+                }
+                for(var i=1;i<=pageNum;i++){
+                    if(i == page){
+                        m += '<li class="am-active"><a href="javascript:Initial('+i+')" rel="external nofollow" rel="external nofollow" >'+i+'</a></li>';
+                    }else{
+                        m += '<li><a href="javascript:Initial('+i+')" rel="external nofollow" rel="external nofollow" >'+i+'</a></li>';
+                    }
+                }
+                //判断后面是否还有页面
+                if(page == pageNum){
+                    m += '<li class="am-disabled"><a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" >»</a></li>';
+                }else{
+                    m += '<li><a href="javascript:Initial('+(page+1)+')" rel="external nofollow" >»</a></li>';
+                }
+                m += '</ul>' +
+                    '</div>' +
+                    '</div><hr>'
+                ;
+                $('#AllConsult').empty();
+                $('#AllConsult').append(m);
+            }});
+    }
+</script>
+<script th:src="@{js/amazeui.min.js}"></script>
+<script th:src="@{js/amazeui.datatables.min.js}"></script>
+<script th:src="@{js/dataTables.responsive.min.js}"></script>
+<script th:src="@{js/app.js}"></script>
+</body>
+
+</html>
