@@ -26,19 +26,16 @@ public class HelloControllers {
     @RequestMapping("/hello")
     public  String hello(){return "HELLO WORLD!!!";}
 
-    @GetMapping("/doctor")
-    public String toDoctor(HttpServletRequest request, Model model, HttpSession session) {
+
+    @RequestMapping("/index")
+    public String index(HttpServletRequest request, Model model, HttpSession session) {
+
         int doctor_id = 1;
         Doctor me = doctorMapper.findDoctorById(doctor_id);
         System.out.println(me.getDoctor_name());
         List<Oldman> my = oldmanMapper.findOldmanByDoctor(doctor_id);
         model.addAttribute("oldmanList", my);
         model.addAttribute("info", me);
-        return "doctor";
-    }
-
-    @RequestMapping("/index")
-    public String index() {
         return "index";
     }
 
