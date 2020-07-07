@@ -57,10 +57,22 @@ public class HelloControllers {
     public String assessment_give() {
         return "assessment_give";
     }
+
     @RequestMapping("/video")
-    public String video() {return "video"; }
+    public String toVideo(HttpServletRequest request, Model model, HttpSession session) {
+        int doctor_id = 1;
+        int online = 1;
+        List<Oldman> on = oldmanMapper.findOldmanByDoctor(doctor_id);
+        List<Oldman> off = oldmanMapper.findOldmanByDoctor(0);
+        model.addAttribute("onList", on);
+        model.addAttribute("offList",off);
+        return "video";
+    }
     @RequestMapping("/video_chat")
-    public String video_chat() {return "video_chat"; }
+    public String toVideo_chat(HttpServletRequest request, Model model, HttpSession session) {
+
+        return "video_chat";
+    }
 
 
 }
