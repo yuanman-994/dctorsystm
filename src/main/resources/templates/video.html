@@ -301,7 +301,8 @@
 
                         <div class="am-scrollable-horizontal " style="margin:0px auto;">
                             <tr th:each="onlineList : ${onList}">
-                                <a href="javascript:;"th:href="@{/video_chat} " method="post">
+                                <a href="javascript:;"th:href="@{/video_chat} " th:value="${onlineList.oldman_name}" method="post">
+                                    <img th:src="${onlineList.oldman_image}">
                                     <span th:text="${onlineList.oldman_name}"></span>
                                     <br>
                                 </a>
@@ -319,6 +320,7 @@
                         </div>
                         <div class="am-scrollable-horizontal " style="margin:0px auto;">
                             <tr th:each="offlineList : ${offList}">
+                                <img th:src="${offlineList.oldman_image}">
                                 <span th:text="${offlineList.oldman_name}"></span>
                                 <br>
                             </tr>
