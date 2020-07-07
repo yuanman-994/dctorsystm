@@ -20,7 +20,20 @@
     <script th:src="@{js/jquery.min.js}"></script>
 
 </head>
-
+<style>
+    .button1 {
+        padding: 8px 16px;
+        text-align: center;
+        background-color: white;
+        color: black;
+        border: 2px solid #4CAF50;
+        border-radius:5px;
+    }
+    .button1:hover {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
 <body data-type="index">
 <script th:src="@{js/theme.js}"></script>
 <div class="am-g tpl-g">
@@ -302,7 +315,7 @@
                             <form th:action="@{/video_chat}" method="post">
                                 <tr th:each="onlineList : ${onList}">
                                     <img th:src="${onlineList.oldman_image}">
-                                    <input type="submit" th:value="${onlineList.oldman_name}" name="oldman">
+                                    <input class="button1" type="submit" th:value="${onlineList.oldman_name}" name="oldman">
                                     <br>
                                 </tr>
                             </form>
