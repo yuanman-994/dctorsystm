@@ -8,6 +8,7 @@ public class Oldman {
     private String oldman_phone;
     private String oldman_address;
     private String oldman_warning;
+    private String oldman_image;
 
     public int getOldman_id() { return oldman_id; }
 
@@ -36,4 +37,8 @@ public class Oldman {
     public String getOldman_warning() { return oldman_warning; }
 
     public void setOldman_warning(String oldman_warning) { this.oldman_warning = oldman_warning; }
+
+    public String getOldman_image() { return oldman_image; }
+
+    public void setOldman_image(String oldman_image) {this.oldman_image = oldman_image; }
 }

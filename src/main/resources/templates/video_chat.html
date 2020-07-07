@@ -158,7 +158,6 @@
                         </ul>
                     </li>
 
-
                     <!-- 退出 -->
                     <li class="am-text-sm">
                         <a href="javascript:;">
@@ -227,6 +226,7 @@
             <li class="sidebar-nav-link">
                 <a href="chart.html">
                     <i class="am-icon-bar-chart sidebar-nav-link-logo"></i> 图表
+
                 </a>
             </li>
 
@@ -295,35 +295,16 @@
                 <div class="am-u-sm-12">
                     <div class="widget am-cf">
                         <div class="widget-head am-cf">
-                            <div class="widget-title am-fl">当前在线老人</div>
-                        </div>
-
-                        <div class="am-scrollable-horizontal " style="margin:0px auto;">
-                            <form th:action="@{/video_chat}" method="post">
-                                <tr th:each="onlineList : ${onList}">
-                                    <img th:src="${onlineList.oldman_image}">
-                                    <input type="submit" th:value="${onlineList.oldman_name}" name="oldman">
-                                    <br>
-                                </tr>
-                            </form>
+                            <div class="widget-title am-fl" >
+                                正在和<td th:text="${oldman}"></td>进行视频通话
+                            </div>
+                            <div class="widget-function am-fr">
 
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row am-cf">
-                <div class="am-u-sm-12">
-                    <div class="widget am-cf">
-                        <div class="widget-head am-cf">
-                            <div class="widget-title am-fl">当前离线病人</div>
+                            </div>
                         </div>
                         <div class="am-scrollable-horizontal " style="margin:0px auto;">
-                            <tr th:each="offlineList : ${offList}">
-                                <img th:src="${offlineList.oldman_image}">
-                                <span th:text="${offlineList.oldman_name}"></span>
-                                <br>
-                            </tr>
+
                         </div>
                     </div>
                 </div>
@@ -332,7 +313,6 @@
     </div>
 </div>
 </div>
-
 <script th:src="@{js/amazeui.min.js}"></script>
 <script th:src="@{js/amazeui.datatables.min.js}"></script>
 <script th:src="@{js/dataTables.responsive.min.js}"></script>
