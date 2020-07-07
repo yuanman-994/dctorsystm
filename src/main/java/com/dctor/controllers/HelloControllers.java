@@ -70,8 +70,11 @@ public class HelloControllers {
     }
     @RequestMapping("/video_chat")
     public String toVideo_chat(HttpServletRequest request, Model model, HttpSession session) {
-
+        String oldman = request.getParameter("oldman");
+        System.out.println(oldman);
+        model.addAttribute("oldman",oldman);
         return "video_chat";
     }
+
 
 }
