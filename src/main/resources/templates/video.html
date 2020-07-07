@@ -299,13 +299,13 @@
                         </div>
 
                         <div class="am-scrollable-horizontal " style="margin:0px auto;">
-                            <tr th:each="onlineList : ${onList}">
-                                <a href="javascript:;"th:href="@{/video_chat} " th:value="${onlineList.oldman_name}" method="post">
+                            <form th:action="@{/video_chat}" method="post">
+                                <tr th:each="onlineList : ${onList}">
                                     <img th:src="${onlineList.oldman_image}">
-                                    <span th:text="${onlineList.oldman_name}"></span>
+                                    <input type="submit" th:value="${onlineList.oldman_name}" name="oldman">
                                     <br>
-                                </a>
-                            </tr>
+                                </tr>
+                            </form>
                         </div>
                     </div>
                 </div>
