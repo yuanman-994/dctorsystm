@@ -1,54 +1,64 @@
-package com.dctor.beans;
+package com.dctor.Controllers;
 
 
-public class estimate {
-    private int estimate_id;
-    private int estimate_doctor;
-    private int estimate_oldman;
-    private String estimate_healthy;
-    private String estimate_content;
-    private String estimate_suggest;
-    private String estimate_datetime;
+
+import com.dctor.beans.Estimate;
+import com.dctor.service.EstimateServiceImp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
-    public int getEstimate_id() { return estimate_id; }
+@Controller
+public class EstimateController {
 
-    public void setEstimate_id(int estimate_id) { this.estimate_id = estimate_id; }
+    @Autowired
+    private EstimateServiceImp estimateService;
 
-    public int getEstimate_doctor() { return estimate_doctor; }
+    @RequestMapping("/question_estimate")
+    public String hall_index(){ return "question_estimate";}
 
-    public void setEstimate_doctor(int estimate_doctor) { this.estimate_doctor = estimate_doctor; }
-
-    public int getEstimate_oldman() { return estimate_oldman; }
-
-    public void setEstimate_oldman(int estimate_oldman) { this.estimate_oldman = estimate_oldman; }
-
-    public String getEstimate_healthy() { return estimate_healthy; }
-
-    public void setEstimate_healthy(String estimate_healthy) { this.estimate_healthy = estimate_healthy; }
-
-    public String getEstimate_content() { return estimate_content; }
-
-    public void setEstimate_content(String estimate_content) { this.estimate_content = estimate_content; }
-
-    public String getEstimate_suggest() { return estimate_suggest; }
-
-    public void setEstimate_suggest(String estimate_suggest) { this.estimate_suggest = estimate_suggest; }
-
-    public String getEstimate_datetime() { return estimate_datetime; }
-
-    public void setEstimate_datetime(String estimate_datetime) { this.estimate_datetime = estimate_datetime; }
-
-    @Override
-    public String toString() {
-        return "Estimate{" +
-                "estimate_id=" + estimate_id +
-                ", estimate_doctor='" + estimate_doctor + '\'' +
-                ", estimate_oldman='" + estimate_oldman + '\'' +
-                ", estimate_healthy='" + estimate_healthy + '\'' +
-                ", estimate_content='" + estimate_content + '\'' +
-                ", estimate_suggest='" + estimate_suggest + '\'' +
-                ", estimate_datetime='" + estimate_datetime + '\'' +
-                '}';
+    @RequestMapping("/getEstimate")
+    @ResponseBody
+    public Map<String,Object> getEstimate() {
+        List<Consult> estimateList = estimateService.findAllestimate();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("estimateList",EstimateList);
+        return map;
     }
+
+    @RequestMapping("/findEstimate")
+    @ResponseBody
+    public Map<String,Object> findEstimate(Integer estimate_id) {
+        Consult estimate = estimateService.findEstimateById(estimate_id);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("estimate",estimate);
+        return map;
+
+    }
+
+    @PostMapping("/updateEstimate")
+    public String updateEstimate(HttpServletRequest request) {
+        String answer=null,state=null;
+        Integer ask_id=0;
+        if(request.getParameter("estimate_suggest")!=null){
+             answer = request.getParameter("estimate_suggest").toString();
+             state = "评估完成";
+        }
+        if(request.getParameter("estimate_id")!=null){
+            estimate_id = Integer.valueOf(request.getParameter("estimate_id").toString());
+        }
+        consultService.updateConsult(estimate_id,content,suggest,datetime);
+        return "redirect:/question_estimate";
+
+    }
+
 }
