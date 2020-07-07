@@ -76,5 +76,4 @@ public class HelloControllers {
         return "video_chat";
     }
 
-
 }
