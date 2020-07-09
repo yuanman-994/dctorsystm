@@ -44,10 +44,12 @@ public class IndexServiceImp implements IndexService {
         for (int i = 0; i <= 6; i++) {
             String date = aWeek[i];
             if (k < data.size()) {
-                String tdate = ft.format((Date) data.get(k).get("date"));
+                String tdate = (String) data.get(k).get("date");
+                System.out.println(tdate);
+                System.out.println(date);
                 if (date.equals(tdate)) {
                     ja.add(date);
-                    jb.add((long) data.get(k).get("num"));
+                    jb.add(data.get(k).get("num"));
                     k++;
                 } else {
                     ja.add(date);
