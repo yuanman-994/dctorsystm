@@ -6,24 +6,23 @@ import com.dctor.mapper.EstimateMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class EstimateServiceImp implements EstimateService{
+public class EstimateServiceImp implements EstimateService {
 
     @Resource
     private EstimateMapper estimateMapper;
 
 
     @Override
-    public List<Consult> findAllEstimate() {
+    public List<Estimate> findAllEstimate() {
         return estimateMapper.findAllEstimate();
     }
 
     @Override
-    public int addEstimate(EStimate estimate) {
+    public int addEstimate(Estimate estimate) {
         estimateMapper.addEstimate(estimate);
         return 0;
     }
@@ -38,5 +37,16 @@ public class EstimateServiceImp implements EstimateService{
     public Estimate findEstimateById(Integer estimate_id) {
         return estimateMapper.findEstimateById(estimate_id);
     }
-    
+
+    @Override
+    public Map<String, Object> searchEstimate(Integer estimate_doctor, Integer estimate_oldman, String estimate_healthy) {
+        return null;
+    }
+
+    public List<Estimate> findAllestimate() {
+        return null;
+    }
+
+    public void updateEstimate(Integer estimate_id, String content, String suggest) {
+    }
 }

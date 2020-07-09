@@ -1,7 +1,7 @@
 package com.dctor.beans;
 
 
-public class estimate {
+public class Estimate {
     private int estimate_id;
     private int estimate_doctor;
     private int estimate_oldman;

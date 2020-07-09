@@ -416,23 +416,23 @@
         <ul class="sidebar-nav">
             <li class="sidebar-nav-heading">Components <span class="sidebar-nav-heading-info"> 附加组件</span></li>
             <li class="sidebar-nav-link">
-                <a href="index.html">
+                <a th:href="@{/index}" class="active">
                     <i class="am-icon-home sidebar-nav-link-logo"></i> 首页
                 </a>
             </li>
             <li class="sidebar-nav-link">
-                <a href="tables.html">
-                    <i class="am-icon-table sidebar-nav-link-logo"></i> 表格
+                <a th:href="@{/question_consult}">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 咨询问题
                 </a>
             </li>
             <li class="sidebar-nav-link">
-                <a href="calendar.html">
-                    <i class="am-icon-calendar sidebar-nav-link-logo"></i> 日历
+                <a th:href="@{/assessment}">
+                    <i class="am-icon-calendar sidebar-nav-link-logo"></i> 医生评估
                 </a>
             </li>
             <li class="sidebar-nav-link">
-                <a href="form.html">
-                    <i class="am-icon-wpforms sidebar-nav-link-logo"></i> 表单
+                <a th:href="@{/video}">
+                    <i class="am-icon-wpforms sidebar-nav-link-logo"></i> 关爱视频
 
                 </a>
             </li>
@@ -443,33 +443,13 @@
                 </a>
             </li>
 
-
-            <li class="sidebar-nav-link">
-                <a href="javascript:;" class="sidebar-nav-sub-title active">
-                    <i class="am-icon-table sidebar-nav-link-logo"></i> 问题咨询
-                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
-                </a>
-                <ul class="sidebar-nav sidebar-nav-sub" style="display: block">
-                    <li class="sidebar-nav-link">
-                        <ul class="sidebar-nav sidebar-nav-sub" style="display: block">
-                            <li class="sidebar-nav-link">
-                                <a href="/question_consult" >
-                                    <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 查看（回复）问题
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-
-
             <li class="sidebar-nav-heading">Page<span class="sidebar-nav-heading-info"> 常用页面</span></li>
             <li class="sidebar-nav-link">
-                <a href="javascript:;" class="sidebar-nav-sub-title active">
+                <a href="javascript:;" class="sidebar-nav-sub-title">
                     <i class="am-icon-table sidebar-nav-link-logo"></i> 数据列表
-                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico sidebar-nav-sub-ico-rotate"></span>
+                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
                 </a>
-                <ul class="sidebar-nav sidebar-nav-sub" style="display: block;">
+                <ul class="sidebar-nav sidebar-nav-sub">
                     <li class="sidebar-nav-link">
                         <a href="table-list.html">
                             <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 文字列表
@@ -477,7 +457,7 @@
                     </li>
 
                     <li class="sidebar-nav-link">
-                        <a href="table-list-img.html" class="sub-active">
+                        <a href="table-list-img.html">
                             <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 图文列表
                         </a>
                     </li>

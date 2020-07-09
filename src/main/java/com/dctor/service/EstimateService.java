@@ -11,9 +11,10 @@ public interface EstimateService {
 
     public int addEstimate(Estimate estimate);
 
-        public int updateEstimate(Integer estimate_id,String estimate_content,String estimate_suggest,String estimate_datetime);
+        public int updateEstimate(Integer estimate_id, String estimate_content, String estimate_suggest, String estimate_datetime);
 
     public Estimate findEstimateById(Integer estimate_id);
 
-    public Map<String,Object> searchEstimate(Integer estimate_doctor,Integer estimate_oldman,String estimate_healthy);
+    public Map<String,Object> searchEstimate(Integer estimate_doctor, Integer estimate_oldman, String estimate_healthy);
+
 }
