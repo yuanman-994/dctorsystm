@@ -61,6 +61,14 @@
                     document.getElementById("doc-ipt-text-2").value = consult.ask_datetime;
                     document.getElementById("doc-ipt-text-3").value = consult.ask_state;
                     document.getElementById("doc-ta-1").value = consult.ask_test;
+                    var answer = consult.ask_answer;
+                    console.log(answer);
+                    if(answer!=null){
+                        document.getElementById("doc-ta-2").value = consult.ask_answer;
+                        document.getElementById("doc-ta-2").style.display = "block";
+                    }else{
+                        document.getElementById("doc-ta-2").style.display = "none";
+                    }
                 }
             })
 
@@ -74,7 +82,9 @@
                     closeViaDimmer:false,
                     relatedTarget: this,
                     onConfirm: function(options) {
-                        $("#answer-form").submit();
+                        if(check()){
+                            $("#answer-form").submit();
+                        }
                     },
                     // closeOnConfirm: false,
                     onCancel: function() {
@@ -406,23 +416,23 @@
         <ul class="sidebar-nav">
             <li class="sidebar-nav-heading">Components <span class="sidebar-nav-heading-info"> 附加组件</span></li>
             <li class="sidebar-nav-link">
-                <a th:href="@{/index}" class="active">
+                <a href="index.html">
                     <i class="am-icon-home sidebar-nav-link-logo"></i> 首页
                 </a>
             </li>
             <li class="sidebar-nav-link">
-                <a th:href="@{/question_consult}">
-                    <i class="am-icon-table sidebar-nav-link-logo"></i> 咨询问题
+                <a href="tables.html">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 表格
                 </a>
             </li>
             <li class="sidebar-nav-link">
-                <a th:href="@{/assessment}">
-                    <i class="am-icon-calendar sidebar-nav-link-logo"></i> 医生评估
+                <a href="calendar.html">
+                    <i class="am-icon-calendar sidebar-nav-link-logo"></i> 日历
                 </a>
             </li>
             <li class="sidebar-nav-link">
-                <a th:href="@{/video}">
-                    <i class="am-icon-wpforms sidebar-nav-link-logo"></i> 关爱视频
+                <a href="form.html">
+                    <i class="am-icon-wpforms sidebar-nav-link-logo"></i> 表单
 
                 </a>
             </li>
@@ -433,13 +443,33 @@
                 </a>
             </li>
 
-            <li class="sidebar-nav-heading">Page<span class="sidebar-nav-heading-info"> 常用页面</span></li>
+
             <li class="sidebar-nav-link">
-                <a href="javascript:;" class="sidebar-nav-sub-title">
-                    <i class="am-icon-table sidebar-nav-link-logo"></i> 数据列表
+                <a href="javascript:;" class="sidebar-nav-sub-title active">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 问题咨询
                     <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
                 </a>
-                <ul class="sidebar-nav sidebar-nav-sub">
+                <ul class="sidebar-nav sidebar-nav-sub" style="display: block">
+                    <li class="sidebar-nav-link">
+                        <ul class="sidebar-nav sidebar-nav-sub" style="display: block">
+                            <li class="sidebar-nav-link">
+                                <a href="/question_consult" >
+                                    <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 查看（回复）问题
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+
+            <li class="sidebar-nav-heading">Page<span class="sidebar-nav-heading-info"> 常用页面</span></li>
+            <li class="sidebar-nav-link">
+                <a href="javascript:;" class="sidebar-nav-sub-title active">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 数据列表
+                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico sidebar-nav-sub-ico-rotate"></span>
+                </a>
+                <ul class="sidebar-nav sidebar-nav-sub" style="display: block;">
                     <li class="sidebar-nav-link">
                         <a href="table-list.html">
                             <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 文字列表
@@ -447,7 +477,7 @@
                     </li>
 
                     <li class="sidebar-nav-link">
-                        <a href="table-list-img.html">
+                        <a href="table-list-img.html" class="sub-active">
                             <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 图文列表
                         </a>
                     </li>
@@ -564,6 +594,12 @@
                         <input class="am-u-md-10 form-control" id="doc-ipt-text-3" name="ask_state" readonly="true">
                     </div>
                 </div>
+                <div class="am-form-group" >
+                    <div class="am-g">
+                        <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ta-1">回复内容</label>
+                        <textarea class="am-u-md-10 form-control" rows="10" id="doc-ta-2" name="ask_answer" readonly="true"></textarea>
+                    </div>
+                </div>
 
             </form>
         </div>
@@ -581,7 +617,7 @@
                 <div class="am-form-group">
                     <div class="am-g">
                         <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ipt-text-1">老人姓名</label>
-                        <input class="am-u-md-10 form-control" id="oldman" name="oldman_name" >
+                        <input class="am-u-md-10 form-control" id="oldman" name="oldman_name" readonly="true">
                     </div>
                 </div>
                 <div class="am-form-group">
@@ -618,8 +654,18 @@
         </div>
     </div>
 </div>
-
 <script>
+    function check() {
+        var answer = document.getElementById("answer").value;
+        if (answer == "") {
+            alert("回复不能为空！");
+            return false;
+        }
+        return true;
+    }
+</script>
+<script>
+
     function  search(page) {
         var id;
         var perpage=5;
