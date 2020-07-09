@@ -61,6 +61,14 @@
                     document.getElementById("doc-ipt-text-2").value = consult.ask_datetime;
                     document.getElementById("doc-ipt-text-3").value = consult.ask_state;
                     document.getElementById("doc-ta-1").value = consult.ask_test;
+                    var answer = consult.ask_answer;
+                    console.log(answer);
+                    if(answer!=null){
+                        document.getElementById("doc-ta-2").value = consult.ask_answer;
+                        document.getElementById("doc-ta-2").style.display = "block";
+                    }else{
+                        document.getElementById("doc-ta-2").style.display = "none";
+                    }
                 }
             })
 
@@ -74,7 +82,9 @@
                     closeViaDimmer:false,
                     relatedTarget: this,
                     onConfirm: function(options) {
-                        $("#answer-form").submit();
+                        if(check()){
+                            $("#answer-form").submit();
+                        }
                     },
                     // closeOnConfirm: false,
                     onCancel: function() {
@@ -441,10 +451,6 @@
                 </a>
                 <ul class="sidebar-nav sidebar-nav-sub" style="display: block">
                     <li class="sidebar-nav-link">
-                        <a href="javascript:;" class="sidebar-nav-sub-title active">
-                            <i class="am-icon-table sidebar-nav-link-logo"></i> 咨询问题
-                            <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
-                        </a>
                         <ul class="sidebar-nav sidebar-nav-sub" style="display: block">
                             <li class="sidebar-nav-link">
                                 <a href="/question_consult" >
@@ -455,18 +461,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="sidebar-nav-link">
-                <a href="/admin_messageboard" class="sidebar-nav-sub-title">
-                    <i class="am-icon-table sidebar-nav-link-logo"></i> 留言管理
-                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
-                </a>
-            </li>
-            <li class="sidebar-nav-link">
-                <a href="/admin_log" class="sidebar-nav-sub-title">
-                    <i class="am-icon-table sidebar-nav-link-logo"></i> 日志管理
-                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
-                </a>
-            </li>
+
 
             <li class="sidebar-nav-heading">Page<span class="sidebar-nav-heading-info"> 常用页面</span></li>
             <li class="sidebar-nav-link">
@@ -599,6 +594,12 @@
                         <input class="am-u-md-10 form-control" id="doc-ipt-text-3" name="ask_state" readonly="true">
                     </div>
                 </div>
+                <div class="am-form-group" >
+                    <div class="am-g">
+                        <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ta-1">回复内容</label>
+                        <textarea class="am-u-md-10 form-control" rows="10" id="doc-ta-2" name="ask_answer" readonly="true"></textarea>
+                    </div>
+                </div>
 
             </form>
         </div>
@@ -616,7 +617,7 @@
                 <div class="am-form-group">
                     <div class="am-g">
                         <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ipt-text-1">老人姓名</label>
-                        <input class="am-u-md-10 form-control" id="oldman" name="oldman_name" >
+                        <input class="am-u-md-10 form-control" id="oldman" name="oldman_name" readonly="true">
                     </div>
                 </div>
                 <div class="am-form-group">
@@ -653,8 +654,18 @@
         </div>
     </div>
 </div>
-
 <script>
+    function check() {
+        var answer = document.getElementById("answer").value;
+        if (answer == "") {
+            alert("回复不能为空！");
+            return false;
+        }
+        return true;
+    }
+</script>
+<script>
+
     function  search(page) {
         var id;
         var perpage=5;
